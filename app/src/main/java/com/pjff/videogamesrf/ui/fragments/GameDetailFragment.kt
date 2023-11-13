@@ -33,18 +33,17 @@ import java.text.DecimalFormat
 private const val GAME_ID = "game_id"
 
 
-class GameDetailFragment : Fragment(), OnMapReadyCallback {
+class GameDetailFragment : Fragment(), OnMapReadyCallback{
 
     private var gameId: String? = null
     private var _binding: FragmentGameDetailBinding? = null
     private val binding get() = _binding!!
     private lateinit var repository: GameRepository
 
-    private lateinit var map: GoogleMap
-
-    private var lat: Double = 0.0
-    private var lon: Double = 0.0
+    private var latitude: Double = 0.0
+    private var longitud: Double = 0.0
     private val decimalsFormat = DecimalFormat("###,###,###.00")
+    private lateinit var map: GoogleMap
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,10 +92,10 @@ class GameDetailFragment : Fragment(), OnMapReadyCallback {
                                 vvVideo.start()
 
 
-                                lat = response.body()?.log_Lat!!
-                                lon= response.body()?.log_Long!!
+                                latitude = response.body()?.log_Lat!!
+                                longitud= response.body()?.log_Long!!
 
-                                var mapFragment: SupportMapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+                                val mapFragment: SupportMapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
                                 mapFragment.getMapAsync(this@GameDetailFragment)
 
                             }
@@ -142,15 +141,14 @@ class GameDetailFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
-
         createMarker()
     }
 
     private fun createMarker(){
-        val coordinates = LatLng(lat, lon)
+        val coordinates = LatLng(latitude, longitud)
         val marker = MarkerOptions()
             .position(coordinates)
-            .title("Location: (${decimalsFormat.format(lat)}, ${decimalsFormat.format(lon)})")
+            .title("Location: (${decimalsFormat.format(latitude)}, ${decimalsFormat.format(longitud)})")
             .icon(BitmapDescriptorFactory.fromResource(R.drawable.person))
 
         map.addMarker(marker)

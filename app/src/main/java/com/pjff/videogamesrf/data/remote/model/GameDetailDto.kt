@@ -22,7 +22,7 @@ data class GameDetailDto(
     var vidDesc: String? = null,
     @SerializedName("locLat")
     var log_Lat: Double? = null,
-    @SerializedName("locLong")
+    @SerializedName("logLong")
     var log_Long: Double? = null
 )
 
