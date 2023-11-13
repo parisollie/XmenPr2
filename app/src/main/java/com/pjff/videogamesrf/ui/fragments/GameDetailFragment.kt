@@ -20,20 +20,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import android.widget.MediaController
-
-import androidx.appcompat.app.AppCompatActivity
-
 import com.google.android.gms.maps.GoogleMap
-import android.Manifest
-import android.content.Context
-import android.content.pm.PackageManager
-import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
@@ -41,66 +28,23 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.pjff.videogamesrf.R
+import java.text.DecimalFormat
 
 private const val GAME_ID = "game_id"
 
 
-class GameDetailFragment : Fragment() {
+class GameDetailFragment : Fragment(), OnMapReadyCallback {
 
     private var gameId: String? = null
     private var _binding: FragmentGameDetailBinding? = null
     private val binding get() = _binding!!
     private lateinit var repository: GameRepository
+
     private lateinit var map: GoogleMap
-    //Mapas
-    //private lateinit var binding: ActivityMainBinding
 
-    //Para Google Maps
-   /* private lateinit var map: GoogleMap
-
-    //Para los permisos,con que pidamos la lozalizacion fina ,la otra se activa
-    private var fineLocationPermissionGranted = false
-
-    private val permissionsLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ){ isGranted ->
-        if(isGranted){
-            //Se concedió el permiso
-            actionPermissionGranted()
-        }else{
-            if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
-                AlertDialog.Builder(this)
-                    .setTitle("Permiso requerido")
-                    .setMessage("Se necesita el permiso para poder ubicar la posición del usuario en el mapa")
-                    .setPositiveButton("Entendido"){ _, _ ->
-                        updateOrRequestPermissions()
-                    }
-                    .setNegativeButton("Salir"){ dialog, _ ->
-                        dialog.dismiss()
-                        finish()
-                    }
-                    .create()
-                    .show()
-            } else {
-                Toast.makeText(
-                    this,
-                    "El permiso de ubicación se ha negado permanentemente",
-                    Toast.LENGTH_SHORT
-                ).show()
-                finish()
-            }
-        }
-    }*/
-
-
-
-
-
-
-
-
-
-
+    private var lat: Double = 0.0
+    private var lon: Double = 0.0
+    private val decimalsFormat = DecimalFormat("###,###,###.00")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -148,6 +92,13 @@ class GameDetailFragment : Fragment() {
                                 vvVideo.setMediaController(mc)
                                 vvVideo.start()
 
+
+                                lat = response.body()?.log_Lat!!
+                                lon= response.body()?.log_Long!!
+
+                                var mapFragment: SupportMapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+                                mapFragment.getMapAsync(this@GameDetailFragment)
+
                             }
 
                         }
@@ -165,11 +116,6 @@ class GameDetailFragment : Fragment() {
 
         }
     }
-
-
-
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -194,6 +140,27 @@ class GameDetailFragment : Fragment() {
             }
     }
 
+    override fun onMapReady(googleMap: GoogleMap) {
+        map = googleMap
+
+        createMarker()
+    }
+
+    private fun createMarker(){
+        val coordinates = LatLng(lat, lon)
+        val marker = MarkerOptions()
+            .position(coordinates)
+            .title("Location: (${decimalsFormat.format(lat)}, ${decimalsFormat.format(lon)})")
+            .icon(BitmapDescriptorFactory.fromResource(R.drawable.person))
+
+        map.addMarker(marker)
+
+        map.animateCamera(
+            CameraUpdateFactory.newLatLngZoom(coordinates, 18f),
+            4000,
+            null
+        )
+    }
 
 
 

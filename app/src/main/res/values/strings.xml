@@ -6,5 +6,6 @@
     <string name="rel">Released: 2020</string>
     <string name="ed_es">Edicion especial</string>
     <string name="stop_music_btn_label">Stop Music</string>
+    <string name="last_known_location_label">Last known location:</string>
 
 </resources>

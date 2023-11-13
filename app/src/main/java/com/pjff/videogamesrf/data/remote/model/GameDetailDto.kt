@@ -20,9 +20,9 @@ data class GameDetailDto(
     var power: String? = null,
     @SerializedName("vid_desc")
     var vidDesc: String? = null,
-    @SerializedName("log_Lat")
-    var logLat: String? = null,
-    @SerializedName("log_long")
-    var logLong: String? = null
+    @SerializedName("locLat")
+    var log_Lat: Double? = null,
+    @SerializedName("locLong")
+    var log_Long: Double? = null
 )
 
