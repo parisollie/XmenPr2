@@ -32,15 +32,13 @@
                 android:gravity="center_horizontal"
                 android:orientation="horizontal">
 
-
-
             </LinearLayout>
 
             <TextView
                 android:id="@+id/textView5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Cursos móviles"
+                android:text="Xmen-app"
                 android:textAlignment="center"
                 android:textColor="#001764"
                 android:textSize="20sp" />
@@ -103,7 +101,7 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="32dp"
-                android:backgroundTint="@android:color/holo_orange_dark"
+                android:backgroundTint="#656030"
                 android:text="Ingresar"
                 android:textAllCaps="false"
                 android:textColor="#ffffff"
@@ -118,7 +116,7 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="32dp"
-                android:backgroundTint="#440877"
+                android:backgroundTint="#1C6ADF"
                 android:text="Registrarse"
                 android:textAllCaps="false"
                 android:textColor="#ffffff"

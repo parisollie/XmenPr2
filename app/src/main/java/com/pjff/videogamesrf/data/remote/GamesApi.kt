@@ -32,6 +32,4 @@ interface GamesApi {
         @Path("name") name: String?*/
     ): Call<GameDetailDto>
 
-
-
 }

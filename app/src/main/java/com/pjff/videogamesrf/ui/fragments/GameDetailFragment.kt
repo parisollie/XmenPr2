@@ -40,8 +40,9 @@ class GameDetailFragment : Fragment(), OnMapReadyCallback{
     private val binding get() = _binding!!
     private lateinit var repository: GameRepository
 
-    private var latitude: Double = 0.0
-    private var longitud: Double = 0.0
+    //Para los mapas
+    private var lati: Double = 0.0
+    private var longi: Double = 0.0
     private val decimalsFormat = DecimalFormat("###,###,###.00")
     private lateinit var map: GoogleMap
 
@@ -83,25 +84,21 @@ class GameDetailFragment : Fragment(), OnMapReadyCallback{
                                 Glide.with(requireContext())
                                     .load(response.body()?.image)
                                     .into(ivImage)
-
+                                //Video
                                 vvVideo.setVideoURI(Uri.parse(response.body()?.vidDesc))
-
                                 val mc = MediaController(requireContext())
                                 mc.setAnchorView(vvVideo)
                                 vvVideo.setMediaController(mc)
                                 vvVideo.start()
 
-
-                                latitude = response.body()?.log_Lat!!
-                                longitud= response.body()?.log_Long!!
+                               //Mapa
+                                lati = response.body()?.log_Lat!!
+                                longi= response.body()?.log_Long!!
 
                                 val mapFragment: SupportMapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
                                 mapFragment.getMapAsync(this@GameDetailFragment)
-
                             }
-
                         }
-
                         override fun onFailure(call: Call<GameDetailDto>, t: Throwable) {
                             binding.pbLoading.visibility = View.GONE
 
@@ -145,11 +142,11 @@ class GameDetailFragment : Fragment(), OnMapReadyCallback{
     }
 
     private fun createMarker(){
-        val coordinates = LatLng(latitude, longitud)
+        val coordinates = LatLng(lati, longi)
         val marker = MarkerOptions()
             .position(coordinates)
-            .title("Location: (${decimalsFormat.format(latitude)}, ${decimalsFormat.format(longitud)})")
-            .icon(BitmapDescriptorFactory.fromResource(R.drawable.person))
+            .title("Location: (${decimalsFormat.format(lati)}, ${decimalsFormat.format(longi)})")
+            .icon(BitmapDescriptorFactory.fromResource(R.drawable.wolf))
 
         map.addMarker(marker)
 
@@ -159,13 +156,4 @@ class GameDetailFragment : Fragment(), OnMapReadyCallback{
             null
         )
     }
-
-
-
-
-
-
-
-
-
 }
